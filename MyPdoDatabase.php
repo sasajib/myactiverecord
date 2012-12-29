@@ -40,8 +40,7 @@ class MyPdoDatabase
         try {
             $this->_connection = new PDO($dsn, $userName, $passWord);
         } catch (PDOException $pdoError) {
-            trigger_error('Unable to connect cause: ' . $pdoError->getMessage(),
-                    E_USER_ERROR);
+            trigger_error('Unable to connect cause: ' . $pdoError->getMessage());
         }
     }
 
