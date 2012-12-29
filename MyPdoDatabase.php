@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * My Pdo Database is a wrapper class to help mysql query within php
  * 
@@ -10,41 +9,49 @@
  */
 class MyPdoDatabase
 {
+
     protected $_dbUser;
     protected $_dbPass;
     protected $_hostName;
     protected $_port;
-    protected $dbName;
-
+    protected $_dbName;
 
     /**
      * This hold database connection
      * @var resource
      */
-    protected $_dbh;
+    protected $_connection;
     
+    /**
+     * Database single instance
+     * @var resource
+     */
     protected static $_instance;
-
-
 
     public function __construct()
     {
-        
-        
         gc_enable();
+        require_once ("config.php");
+
+        $dsn = "mysql:host={$database['hostname']}:{$database['port']};dbname={$database['dbname']}";
+        $userName = $database['username'];
+        $passWord = $database['password'];
+
+        try {
+            $this->_connection = new PDO($dsn, $userName, $passWord);
+        } catch (PDOException $pdoError) {
+            trigger_error('Unable to connect cause: ' . $pdoError->getMessage(),
+                    E_USER_ERROR);
+        }
     }
-    
-    
-    public function get_instance()
+
+    public static function get_instance()
     {
-        if(!self::$_instance){
+        if (!self::$_instance) {
             self::$_instance = new self();
         }
         return self::$_instance;
     }
-    
-    
-    
 
     public function __destruct()
     {
@@ -53,5 +60,6 @@ class MyPdoDatabase
 
 }
 
-/* End of file MyPdoDatabase.php*/
+/* End of file MyPdoDatabase.php */
 
+$db = MyPdoDatabase::get_instance();
