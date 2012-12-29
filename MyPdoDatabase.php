@@ -4,7 +4,7 @@
  * My Pdo Database is a wrapper class to help mysql query within php
  * 
  * This class require 5.3+ php version. Implemented singleton design pattern
- * 
+ * @todo Fix constructor for abastract dsn
  * @author Shakil Ahmed <sasajib@gmail.com>
  */
 class MyPdoDatabase
@@ -40,7 +40,7 @@ class MyPdoDatabase
         try {
             $this->_connection = new PDO($dsn, $userName, $passWord);
         } catch (PDOException $pdoError) {
-            trigger_error('Unable to connect cause: ' . $pdoError->getMessage());
+            exit('Unable to connect cause: ' . $pdoError->getMessage());
         }
     }
 
